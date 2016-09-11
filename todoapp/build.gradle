@@ -23,7 +23,7 @@ task clean(type: Delete) {
 // Define versions in a single place
 ext {
     // Sdk and tools
-    minSdkVersion = 10
+    minSdkVersion = 16
     targetSdkVersion = 22
     compileSdkVersion = 23
     buildToolsVersion = '23.0.2'
@@ -31,6 +31,7 @@ ext {
     // App dependencies
     supportLibraryVersion = '23.4.0'
     guavaVersion = '18.0'
+    conductorVersion = '2.0.1'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
     powerMockito = '1.6.2'

@@ -39,6 +39,15 @@ public abstract class BaseController extends Controller {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
+    @Override
+    protected void onDestroyView(View view) {
+        super.onDestroyView(view);
+        setActive(false);
+        // Note: in a real application you may wish to unbind your view references by
+        // overriding this method and setting each reference to null. This releases the Views
+        // that are on the back-stack and saves memory.
+    }
+
     protected void setActive(boolean active) {
         mActive = active;
     }

@@ -59,18 +59,6 @@ public class StatisticsController extends BaseController implements StatisticsCo
     }
 
     @Override
-    protected void onDestroyView(View view) {
-        super.onDestroyView(view);
-
-        setActive(false);
-
-        // Controllers are kept in a retained fragment during configuration changes.
-        // All Views must be set to null to prevent leaking the old Activity.
-        // It also saves memory since the Views on the back stack are destroyed and recreated.
-        mStatisticsTV = null;
-    }
-
-    @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         // Configure Activity level UI.

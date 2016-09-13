@@ -85,6 +85,8 @@ public class AddEditTaskController extends BaseController implements AddEditTask
 
         setHasOptionsMenu(true);
 
+        setActive(true);
+
         // Create the presenter
         mPresenter = new AddEditTaskPresenter(
                 mTaskId,

@@ -16,15 +16,17 @@
 
 package com.example.android.architecture.blueprints.todoapp.tasks;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +41,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.android.architecture.blueprints.todoapp.BaseController;
+import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
@@ -47,14 +51,16 @@ import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetail
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Display a grid of {@link Task}s. User can choose to view all, active or completed tasks.
  */
-public class TasksFragment extends Fragment implements TasksContract.View {
+public class TasksFragment extends BaseController implements TasksContract.View {
+
+    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
     private TasksContract.Presenter mPresenter;
+
+    private TasksFilterType mCurrentFiltering;
 
     private TasksAdapter mListAdapter;
 
@@ -71,28 +77,20 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     private TextView mFilteringLabelView;
 
     public TasksFragment() {
-        // Requires empty public constructor
     }
 
-    public static TasksFragment newInstance() {
-        return new TasksFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mListAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.start();
+    /**
+     * This constructor is used by Conductor to recreate the Controller if it has been destroyed.
+     * @param args  The {@link Bundle} object containing the previous state of the Controller.
+     */
+    public TasksFragment(Bundle args) {
+        super(args);
+        mCurrentFiltering = (TasksFilterType) args.getSerializable(CURRENT_FILTERING_KEY);
     }
 
     @Override
     public void setPresenter(@NonNull TasksContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
+        // todo: remove
     }
 
     @Override
@@ -100,11 +98,12 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         mPresenter.result(requestCode, resultCode);
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
         View root = inflater.inflate(R.layout.tasks_frag, container, false);
+
+        mListAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
 
         // Set up tasks view
         ListView listView = (ListView) root.findViewById(R.id.tasks_list);
@@ -126,7 +125,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
         // Set up floating action button
         FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
+                (FloatingActionButton) root.findViewById(R.id.fab_add_task);
 
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +155,39 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
         setHasOptionsMenu(true);
 
+        setActive(true);
+
+        setupPresenter();
+
         return root;
+    }
+
+    private void setupPresenter() {
+        mPresenter = new TasksPresenter(
+                Injection.provideTasksRepository(getApplicationContext()), this);
+        if (mCurrentFiltering != null) {
+            mPresenter.setFiltering(mCurrentFiltering);
+        }
+        mPresenter.start();
+    }
+
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        // Configure Activity level UI.
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.list_title);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        DrawerLayout drawerLayout = getDrawerLayout();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(CURRENT_FILTERING_KEY, mPresenter.getFiltering());
     }
 
     @Override
@@ -182,7 +213,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showFilteringPopUpMenu() {
-        PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_filter));
+        PopupMenu popup = new PopupMenu(getActivity(), getActivity().findViewById(R.id.menu_filter));
         popup.getMenuInflater().inflate(R.menu.filter_tasks, popup.getMenu());
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -281,7 +312,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showSuccessfullySavedMessage() {
-        showMessage(getString(R.string.successfully_saved_task_message));
+        showMessage(getResources().getString(R.string.successfully_saved_task_message));
     }
 
     private void showNoTasksViews(String mainText, int iconRes, boolean showAddView) {
@@ -310,7 +341,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showAddTask() {
-        Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
+        Intent intent = new Intent(getActivity(), AddEditTaskActivity.class);
         startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
     }
 
@@ -318,38 +349,33 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     public void showTaskDetailsUi(String taskId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
-        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
         startActivity(intent);
     }
 
     @Override
     public void showTaskMarkedComplete() {
-        showMessage(getString(R.string.task_marked_complete));
+        showMessage(getResources().getString(R.string.task_marked_complete));
     }
 
     @Override
     public void showTaskMarkedActive() {
-        showMessage(getString(R.string.task_marked_active));
+        showMessage(getResources().getString(R.string.task_marked_active));
     }
 
     @Override
     public void showCompletedTasksCleared() {
-        showMessage(getString(R.string.completed_tasks_cleared));
+        showMessage(getResources().getString(R.string.completed_tasks_cleared));
     }
 
     @Override
     public void showLoadingTasksError() {
-        showMessage(getString(R.string.loading_tasks_error));
+        showMessage(getResources().getString(R.string.loading_tasks_error));
     }
 
     private void showMessage(String message) {
         Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean isActive() {
-        return isAdded();
     }
 
     private static class TasksAdapter extends BaseAdapter {

@@ -1,5 +1,6 @@
 package com.example.android.architecture.blueprints.todoapp;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -9,6 +10,12 @@ import com.bluelinelabs.conductor.Controller;
 
 public abstract class BaseController extends Controller {
     private boolean mActive = false;
+
+    public BaseController() {
+    }
+
+    public BaseController(Bundle args) {
+    }
 
     protected ActionBar getActionBar() {
         ActionBarProvider actionBarProvider = ((ActionBarProvider)getActivity());

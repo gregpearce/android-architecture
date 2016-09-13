@@ -16,9 +16,10 @@
 
 package com.example.android.architecture.blueprints.todoapp;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,8 @@ import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsController;
-import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity;
+import com.example.android.architecture.blueprints.todoapp.tasks.TasksFragment;
+import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
 /**
  * The activity for the app.
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
 
         router = Conductor.attachRouter(this, mContainer, savedInstanceState);
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(new StatisticsController()));
+            router.setRoot(RouterTransaction.with(new TasksFragment()));
         }
     }
 
@@ -94,14 +96,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
-                                Intent intent =
-                                        new Intent(MainActivity.this, TasksActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                router.setRoot(RouterTransaction.with(new TasksFragment()));
                                 break;
                             case R.id.statistics_navigation_menu_item:
-                                // Do nothing, we're already on that screen
+                                router.setRoot(RouterTransaction.with(new StatisticsController()));
                                 break;
                             default:
                                 break;
@@ -117,5 +115,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
     @Override
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

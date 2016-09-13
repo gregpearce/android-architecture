@@ -42,7 +42,7 @@ import com.google.common.base.Preconditions;
 /**
  * Main UI for the task detail screen.
  */
-public class TaskDetailFragment extends BaseController implements TaskDetailContract.View {
+public class TaskDetailController extends BaseController implements TaskDetailContract.View {
 
     @NonNull
     private static final String ARGUMENT_TASK_ID = "TASK_ID";
@@ -60,13 +60,13 @@ public class TaskDetailFragment extends BaseController implements TaskDetailCont
 
     private CheckBox mDetailCompleteStatus;
 
-    public TaskDetailFragment(String taskId) {
+    public TaskDetailController(String taskId) {
         this(new BundleBuilder(new Bundle())
                 .putString(ARGUMENT_TASK_ID, taskId)
                 .build());
     }
 
-    public TaskDetailFragment(Bundle args) {
+    public TaskDetailController(Bundle args) {
         super(args);
         mTaskId = args.getString(ARGUMENT_TASK_ID);
     }
@@ -74,7 +74,7 @@ public class TaskDetailFragment extends BaseController implements TaskDetailCont
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        View root = inflater.inflate(R.layout.taskdetail_frag, container, false);
+        View root = inflater.inflate(R.layout.taskdetail_controller, container, false);
         setHasOptionsMenu(true);
         mDetailTitle = (TextView) root.findViewById(R.id.task_detail_title);
         mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);

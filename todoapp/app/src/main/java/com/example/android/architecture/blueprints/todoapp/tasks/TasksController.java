@@ -49,7 +49,7 @@ import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskController;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
-import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailFragment;
+import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -357,7 +357,7 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
     @Override
     public void showTaskDetailsUi(String taskId) {
-        getRouter().pushController(RouterTransaction.with(new TaskDetailFragment(taskId))
+        getRouter().pushController(RouterTransaction.with(new TaskDetailController(taskId))
                 .pushChangeHandler(new HorizontalChangeHandler())
                 .popChangeHandler(new HorizontalChangeHandler()));
     }

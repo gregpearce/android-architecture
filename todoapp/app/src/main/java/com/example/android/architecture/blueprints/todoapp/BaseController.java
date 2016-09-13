@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bluelinelabs.conductor.Controller;
@@ -34,9 +35,21 @@ public abstract class BaseController extends Controller {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeAsUpIndicator(0);
 
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // Set the default behavior to be back navigation
+                getRouter().popCurrentController();
+                break;
+        }
+        return true;
     }
 
     @Override

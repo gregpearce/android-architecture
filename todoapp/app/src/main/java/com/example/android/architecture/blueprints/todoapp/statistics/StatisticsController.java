@@ -17,9 +17,11 @@
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -49,6 +51,8 @@ public class StatisticsController extends BaseController implements StatisticsCo
         View root = inflater.inflate(R.layout.statistics_frag, container, false);
         mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
+        setHasOptionsMenu(true);
+
         setActive(true);
 
         mPresenter = new StatisticsPresenter(
@@ -71,6 +75,17 @@ public class StatisticsController extends BaseController implements StatisticsCo
 
         // Start Presenter
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // Open the navigation drawer when the home icon is selected from the toolbar.
+                getDrawerLayout().openDrawer(GravityCompat.START);
+                break;
+        }
+        return true;
     }
 
     @Override

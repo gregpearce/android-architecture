@@ -34,7 +34,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity" />
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity" />
     </application>
 
 </manifest>

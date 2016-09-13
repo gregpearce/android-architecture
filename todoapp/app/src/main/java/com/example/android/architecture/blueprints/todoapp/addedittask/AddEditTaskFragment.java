@@ -16,60 +16,65 @@
 
 package com.example.android.architecture.blueprints.todoapp.addedittask;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.architecture.blueprints.todoapp.BaseController;
+import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.example.android.architecture.blueprints.todoapp.util.BundleBuilder;
 
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
  */
-public class AddEditTaskFragment extends Fragment implements AddEditTaskContract.View {
+public class AddEditTaskFragment extends BaseController implements AddEditTaskContract.View {
 
-    public static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
+    private static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
 
     private AddEditTaskContract.Presenter mPresenter;
+
+    private final String mTaskId;
 
     private TextView mTitle;
 
     private TextView mDescription;
 
-    public static AddEditTaskFragment newInstance() {
-        return new AddEditTaskFragment();
-    }
-
     public AddEditTaskFragment() {
-        // Required empty public constructor
+        this(new Bundle());
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.start();
+    public AddEditTaskFragment(String taskId) {
+        this(new BundleBuilder(new Bundle())
+                .putString(ARGUMENT_EDIT_TASK_ID, taskId)
+                .build());
+    }
+
+    public AddEditTaskFragment(Bundle args) {
+        super(args);
+        mTaskId = args.getString(ARGUMENT_EDIT_TASK_ID);
     }
 
     @Override
     public void setPresenter(@NonNull AddEditTaskContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
+        // todo: remove
     }
 
+    @NonNull
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
+        View root = inflater.inflate(R.layout.addtask_frag, container, false);
+        mTitle = (TextView) root.findViewById(R.id.add_task_title);
+        mDescription = (TextView) root.findViewById(R.id.add_task_description);
 
         FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task_done);
+                (FloatingActionButton) root.findViewById(R.id.fab_edit_task_done);
         fab.setImageResource(R.drawable.ic_done);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,30 +82,44 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
                 mPresenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());
             }
         });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.addtask_frag, container, false);
-        mTitle = (TextView) root.findViewById(R.id.add_task_title);
-        mDescription = (TextView) root.findViewById(R.id.add_task_description);
 
         setHasOptionsMenu(true);
-        setRetainInstance(true);
+
+        // Create the presenter
+        mPresenter = new AddEditTaskPresenter(
+                mTaskId,
+                Injection.provideTasksRepository(getApplicationContext()),
+                this);
+
         return root;
     }
 
     @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+
+        // Configure Activity level UI.
+        ActionBar actionBar = getActionBar();
+        if (mTaskId == null) {
+            actionBar.setTitle(R.string.add_task);
+        } else {
+            actionBar.setTitle(R.string.edit_task);
+        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        // Start Presenter
+        mPresenter.start();
+    }
+
+    @Override
     public void showEmptyTaskError() {
-        Snackbar.make(mTitle, getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mTitle, getResources().getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showTasksList() {
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        getRouter().popCurrentController();
     }
 
     @Override
@@ -111,10 +130,5 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     @Override
     public void setDescription(String description) {
         mDescription.setText(description);
-    }
-
-    @Override
-    public boolean isActive() {
-        return isAdded();
     }
 }

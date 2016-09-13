@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Listens to user actions from the UI ({@link TasksFragment}), retrieves the data and updates the
+ * Listens to user actions from the UI ({@link TasksController}), retrieves the data and updates the
  * UI as required.
  */
 public class TasksPresenter implements TasksContract.Presenter {

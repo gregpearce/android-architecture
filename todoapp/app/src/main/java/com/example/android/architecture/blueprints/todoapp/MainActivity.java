@@ -31,7 +31,7 @@ import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsController;
-import com.example.android.architecture.blueprints.todoapp.tasks.TasksFragment;
+import com.example.android.architecture.blueprints.todoapp.tasks.TasksController;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
 /**
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
 
         router = Conductor.attachRouter(this, mContainer, savedInstanceState);
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(new TasksFragment()));
+            router.setRoot(RouterTransaction.with(new TasksController()));
         }
     }
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
-                                router.setRoot(RouterTransaction.with(new TasksFragment()));
+                                router.setRoot(RouterTransaction.with(new TasksController()));
                                 break;
                             case R.id.statistics_navigation_menu_item:
                                 router.setRoot(RouterTransaction.with(new StatisticsController()));

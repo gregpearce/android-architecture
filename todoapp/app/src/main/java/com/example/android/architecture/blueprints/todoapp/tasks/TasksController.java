@@ -54,7 +54,7 @@ import java.util.List;
 /**
  * Display a grid of {@link Task}s. User can choose to view all, active or completed tasks.
  */
-public class TasksFragment extends BaseController implements TasksContract.View {
+public class TasksController extends BaseController implements TasksContract.View {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
@@ -76,14 +76,14 @@ public class TasksFragment extends BaseController implements TasksContract.View 
 
     private TextView mFilteringLabelView;
 
-    public TasksFragment() {
+    public TasksController() {
     }
 
     /**
      * This constructor is used by Conductor to recreate the Controller if it has been destroyed.
      * @param args  The {@link Bundle} object containing the previous state of the Controller.
      */
-    public TasksFragment(Bundle args) {
+    public TasksController(Bundle args) {
         super(args);
         mCurrentFiltering = (TasksFilterType) args.getSerializable(CURRENT_FILTERING_KEY);
     }

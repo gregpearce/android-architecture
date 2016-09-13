@@ -168,7 +168,6 @@ public class TasksController extends BaseController implements TasksContract.Vie
         if (mCurrentFiltering != null) {
             mPresenter.setFiltering(mCurrentFiltering);
         }
-        mPresenter.start();
     }
 
     @Override
@@ -182,6 +181,9 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+
+        // Start Presenter
+        mPresenter.start();
     }
 
     @Override

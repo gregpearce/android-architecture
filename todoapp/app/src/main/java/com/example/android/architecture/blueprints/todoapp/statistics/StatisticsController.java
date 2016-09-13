@@ -53,7 +53,6 @@ public class StatisticsController extends BaseController implements StatisticsCo
 
         mPresenter = new StatisticsPresenter(
                 Injection.provideTasksRepository(getApplicationContext()), this);
-        mPresenter.start();
 
         return root;
     }
@@ -69,6 +68,9 @@ public class StatisticsController extends BaseController implements StatisticsCo
 
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+
+        // Start Presenter
+        mPresenter.start();
     }
 
     @Override

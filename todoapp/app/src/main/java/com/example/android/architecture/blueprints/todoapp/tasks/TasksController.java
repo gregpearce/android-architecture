@@ -104,7 +104,7 @@ public class TasksController extends BaseController implements TasksContract.Vie
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        View root = inflater.inflate(R.layout.tasks_frag, container, false);
+        View root = inflater.inflate(R.layout.tasks_controller, container, false);
 
         mListAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
 

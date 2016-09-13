@@ -69,7 +69,7 @@ public class AddEditTaskController extends BaseController implements AddEditTask
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        View root = inflater.inflate(R.layout.addtask_frag, container, false);
+        View root = inflater.inflate(R.layout.addtask_controller, container, false);
         mTitle = (TextView) root.findViewById(R.id.add_task_title);
         mDescription = (TextView) root.findViewById(R.id.add_task_description);
 

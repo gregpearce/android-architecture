@@ -48,7 +48,7 @@ public class StatisticsController extends BaseController implements StatisticsCo
     @Override
     protected View onCreateView(@NonNull final LayoutInflater inflater,
                                 @NonNull final ViewGroup container) {
-        View root = inflater.inflate(R.layout.statistics_frag, container, false);
+        View root = inflater.inflate(R.layout.statistics_controller, container, false);
         mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
         setHasOptionsMenu(true);

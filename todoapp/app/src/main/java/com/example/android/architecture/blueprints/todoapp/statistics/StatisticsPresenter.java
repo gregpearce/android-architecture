@@ -28,7 +28,7 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 import java.util.List;
 
 /**
- * Listens to user actions from the UI ({@link StatisticsFragment}), retrieves the data and updates
+ * Listens to user actions from the UI ({@link StatisticsController}), retrieves the data and updates
  * the UI as required.
  */
 public class StatisticsPresenter implements StatisticsContract.Presenter {

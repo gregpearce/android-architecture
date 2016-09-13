@@ -54,8 +54,8 @@ public class StatisticsScreenTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<StatisticsActivity> mStatisticsActivityTestRule =
-            new ActivityTestRule<>(StatisticsActivity.class, true, false);
+    public ActivityTestRule<MainActivity> mStatisticsActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class, true, false);
 
     /**
      * Setup your test fixture with a fake task id. The {@link TaskDetailActivity} is started with

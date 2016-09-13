@@ -35,7 +35,7 @@
         </activity>
         <activity android:name="com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity" />
         <activity android:name="com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity" />
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity" />
+        <activity android:name=".statistics.MainActivity" />
     </application>
 
 </manifest>

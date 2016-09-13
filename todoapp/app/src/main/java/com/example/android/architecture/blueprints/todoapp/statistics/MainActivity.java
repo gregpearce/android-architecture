@@ -34,9 +34,9 @@ import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity;
 
 /**
- * Show statistics for tasks.
+ * The activity for the app.
  */
-public class StatisticsActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private ViewGroup mContainer;
     private DrawerLayout mDrawerLayout;
@@ -70,7 +70,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         router = Conductor.attachRouter(this, mContainer, savedInstanceState);
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(new StatisticsFragment()));
+            router.setRoot(RouterTransaction.with(new StatisticsController()));
         }
     }
 
@@ -100,7 +100,7 @@ public class StatisticsActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
                                 Intent intent =
-                                        new Intent(StatisticsActivity.this, TasksActivity.class);
+                                        new Intent(MainActivity.this, TasksActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);

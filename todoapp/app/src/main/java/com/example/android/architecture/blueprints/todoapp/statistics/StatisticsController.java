@@ -29,7 +29,7 @@ import com.example.android.architecture.blueprints.todoapp.R;
 /**
  * Main UI for the statistics screen.
  */
-public class StatisticsFragment extends BaseController implements StatisticsContract.View {
+public class StatisticsController extends BaseController implements StatisticsContract.View {
 
     private TextView mStatisticsTV;
 

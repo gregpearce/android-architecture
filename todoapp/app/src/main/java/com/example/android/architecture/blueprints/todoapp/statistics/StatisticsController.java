@@ -17,6 +17,8 @@
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +66,21 @@ public class StatisticsController extends BaseController implements StatisticsCo
 
         // Controllers are kept in a retained fragment during configuration changes.
         // All Views must be set to null to prevent leaking the old Activity.
+        // It also saves memory since the Views on the back stack are destroyed and recreated.
         mStatisticsTV = null;
+    }
+
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        // Configure Activity level UI.
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.statistics_title);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        DrawerLayout drawerLayout = getDrawerLayout();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
     }
 
     @Override

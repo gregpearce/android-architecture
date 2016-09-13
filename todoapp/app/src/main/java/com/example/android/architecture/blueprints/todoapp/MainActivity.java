@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -36,7 +35,7 @@ import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity;
 /**
  * The activity for the app.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DrawerLayoutProvider, ActionBarProvider {
 
     private ViewGroup mContainer;
     private DrawerLayout mDrawerLayout;
@@ -52,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle(R.string.statistics_title);
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
 
         // Set up the controller container.
         mContainer = (ViewGroup) findViewById(R.id.controller_container);
@@ -117,5 +112,10 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
     }
 }

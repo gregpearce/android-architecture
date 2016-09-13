@@ -47,7 +47,7 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.example.android.architecture.blueprints.todoapp.BaseController;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment;
+import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskController;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity;
 
@@ -350,7 +350,7 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
     @Override
     public void showAddTask() {
-        getRouter().pushController(RouterTransaction.with(new AddEditTaskFragment())
+        getRouter().pushController(RouterTransaction.with(new AddEditTaskController())
                 .pushChangeHandler(new HorizontalChangeHandler())
                 .popChangeHandler(new HorizontalChangeHandler()));
     }

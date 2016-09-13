@@ -34,7 +34,7 @@ import com.example.android.architecture.blueprints.todoapp.util.BundleBuilder;
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
  */
-public class AddEditTaskFragment extends BaseController implements AddEditTaskContract.View {
+public class AddEditTaskController extends BaseController implements AddEditTaskContract.View {
 
     private static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
 
@@ -46,17 +46,17 @@ public class AddEditTaskFragment extends BaseController implements AddEditTaskCo
 
     private TextView mDescription;
 
-    public AddEditTaskFragment() {
+    public AddEditTaskController() {
         this(new Bundle());
     }
 
-    public AddEditTaskFragment(String taskId) {
+    public AddEditTaskController(String taskId) {
         this(new BundleBuilder(new Bundle())
                 .putString(ARGUMENT_EDIT_TASK_ID, taskId)
                 .build());
     }
 
-    public AddEditTaskFragment(Bundle args) {
+    public AddEditTaskController(Bundle args) {
         super(args);
         mTaskId = args.getString(ARGUMENT_EDIT_TASK_ID);
     }

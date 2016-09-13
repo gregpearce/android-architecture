@@ -16,56 +16,61 @@
 
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.architecture.blueprints.todoapp.BaseController;
+import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Main UI for the statistics screen.
  */
-public class StatisticsFragment extends Fragment implements StatisticsContract.View {
+public class StatisticsFragment extends BaseController implements StatisticsContract.View {
 
     private TextView mStatisticsTV;
 
     private StatisticsContract.Presenter mPresenter;
 
-    public static StatisticsFragment newInstance() {
-        return new StatisticsFragment();
-    }
-
     @Override
     public void setPresenter(@NonNull StatisticsContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
+        // todo: remove this method
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected View onCreateView(@NonNull final LayoutInflater inflater,
+                                @NonNull final ViewGroup container) {
         View root = inflater.inflate(R.layout.statistics_frag, container, false);
         mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
+
+        setActive(true);
+
+        mPresenter = new StatisticsPresenter(
+                Injection.provideTasksRepository(getApplicationContext()), this);
+        mPresenter.start();
+
         return root;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.start();
+    protected void onDestroyView(View view) {
+        super.onDestroyView(view);
+
+        setActive(false);
+
+        // Controllers are kept in a retained fragment during configuration changes.
+        // All Views must be set to null to prevent leaking the old Activity.
+        mStatisticsTV = null;
     }
 
     @Override
     public void setProgressIndicator(boolean active) {
         if (active) {
-            mStatisticsTV.setText(getString(R.string.loading));
+            mStatisticsTV.setText(getResources().getString(R.string.loading));
         } else {
             mStatisticsTV.setText("");
         }
@@ -86,10 +91,5 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     @Override
     public void showLoadingStatisticsError() {
         mStatisticsTV.setText(getResources().getString(R.string.statistics_error));
-    }
-
-    @Override
-    public boolean isActive() {
-        return isAdded();
     }
 }

@@ -61,11 +61,6 @@ public class AddEditTaskController extends BaseController implements AddEditTask
         mTaskId = args.getString(ARGUMENT_EDIT_TASK_ID);
     }
 
-    @Override
-    public void setPresenter(@NonNull AddEditTaskContract.Presenter presenter) {
-        // todo: remove
-    }
-
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {

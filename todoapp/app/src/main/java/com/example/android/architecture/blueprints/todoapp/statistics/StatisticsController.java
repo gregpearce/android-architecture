@@ -39,11 +39,6 @@ public class StatisticsController extends BaseController implements StatisticsCo
 
     private StatisticsContract.Presenter mPresenter;
 
-    @Override
-    public void setPresenter(@NonNull StatisticsContract.Presenter presenter) {
-        // todo: remove this method
-    }
-
     @NonNull
     @Override
     protected View onCreateView(@NonNull final LayoutInflater inflater,

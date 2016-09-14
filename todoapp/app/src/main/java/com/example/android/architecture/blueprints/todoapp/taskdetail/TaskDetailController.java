@@ -116,11 +116,6 @@ public class TaskDetailController extends BaseController implements TaskDetailCo
     }
 
     @Override
-    public void setPresenter(@NonNull TaskDetailContract.Presenter presenter) {
-        // todo: remove method
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_delete:

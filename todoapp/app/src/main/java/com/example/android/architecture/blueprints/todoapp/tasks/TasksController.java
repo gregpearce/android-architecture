@@ -92,11 +92,6 @@ public class TasksController extends BaseController implements TasksContract.Vie
     }
 
     @Override
-    public void setPresenter(@NonNull TasksContract.Presenter presenter) {
-        // todo: remove
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mPresenter.result(requestCode, resultCode);
     }

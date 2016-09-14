@@ -68,6 +68,8 @@ public class AddEditTaskController extends BaseController implements AddEditTask
         mTitle = (TextView) root.findViewById(R.id.add_task_title);
         mDescription = (TextView) root.findViewById(R.id.add_task_description);
 
+        mTitle.requestFocus();
+
         FloatingActionButton fab =
                 (FloatingActionButton) root.findViewById(R.id.fab_edit_task_done);
         fab.setImageResource(R.drawable.ic_done);

@@ -16,8 +16,6 @@
 
 package com.example.android.architecture.blueprints.todoapp.taskdetail;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -33,22 +31,25 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.example.android.architecture.blueprints.todoapp.BaseController;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskController;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResult;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResultHandler;
 import com.example.android.architecture.blueprints.todoapp.util.BundleBuilder;
 import com.google.common.base.Preconditions;
 
 /**
  * Main UI for the task detail screen.
  */
-public class TaskDetailController extends BaseController implements TaskDetailContract.View {
+public class TaskDetailController extends BaseController
+        implements TaskDetailContract.View, ControllerResultHandler {
 
     @NonNull
     private static final String ARGUMENT_TASK_ID = "TASK_ID";
-
-    @NonNull
-    private static final int REQUEST_EDIT_TASK = 1;
 
     private TaskDetailContract.Presenter mPresenter;
 
@@ -174,7 +175,11 @@ public class TaskDetailController extends BaseController implements TaskDetailCo
 
     @Override
     public void showEditTask(@NonNull String taskId) {
-        // todo: implement task editing
+        AddEditTaskController addEditTaskController = new AddEditTaskController(taskId);
+        addEditTaskController.setTargetController(this);
+        getRouter().pushController(RouterTransaction.with(addEditTaskController)
+                .pushChangeHandler(new HorizontalChangeHandler())
+                .popChangeHandler(new HorizontalChangeHandler()));
     }
 
     @Override
@@ -194,12 +199,10 @@ public class TaskDetailController extends BaseController implements TaskDetailCo
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_TASK) {
+    public void onResult(ControllerResult result) {
+        if (result == ControllerResult.OK) {
             // If the task was edited successfully, go back to the list.
-            if (resultCode == Activity.RESULT_OK) {
-                getActivity().finish();
-            }
+            getRouter().popController(this);
         }
     }
 

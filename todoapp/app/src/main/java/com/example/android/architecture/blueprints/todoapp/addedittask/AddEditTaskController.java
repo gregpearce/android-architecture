@@ -26,9 +26,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bluelinelabs.conductor.Controller;
 import com.example.android.architecture.blueprints.todoapp.BaseController;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResult;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResultHandler;
 import com.example.android.architecture.blueprints.todoapp.util.BundleBuilder;
 
 /**
@@ -118,7 +121,13 @@ public class AddEditTaskController extends BaseController implements AddEditTask
 
     @Override
     public void showTasksList() {
-        getRouter().popCurrentController();
+        Controller targetController = getTargetController();
+
+        if (targetController instanceof ControllerResultHandler) {
+            ((ControllerResultHandler) targetController).onResult(ControllerResult.OK);
+        }
+
+        getRouter().popController(this);
     }
 
     @Override

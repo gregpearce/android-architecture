@@ -84,19 +84,6 @@ public class TasksController extends BaseController
 
     private ControllerResult mControllerResult;
 
-    public TasksController() {
-    }
-
-    /**
-     * This constructor is used by Conductor to recreate the Controller if it has been destroyed.
-     *
-     * @param args The {@link Bundle} object containing the previous state of the Controller.
-     */
-    public TasksController(Bundle args) {
-        super(args);
-        mCurrentFiltering = (TasksFilterType) args.getSerializable(CURRENT_FILTERING_KEY);
-    }
-
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
@@ -175,7 +162,6 @@ public class TasksController extends BaseController
         if (mCurrentFiltering != null) {
             mPresenter.setFiltering(mCurrentFiltering);
         }
-
     }
 
     @Override
@@ -201,9 +187,23 @@ public class TasksController extends BaseController
     }
 
     @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        // The Controller is kept in a retained Fragment during configuration changes, just save the
+        // to a member variable.
+        mCurrentFiltering = mPresenter.getFiltering();
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(CURRENT_FILTERING_KEY, mPresenter.getFiltering());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrentFiltering = (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
     }
 
     @Override

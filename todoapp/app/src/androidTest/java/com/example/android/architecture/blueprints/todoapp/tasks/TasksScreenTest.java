@@ -48,6 +48,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.android.architecture.blueprints.todoapp.Injection;
+import com.example.android.architecture.blueprints.todoapp.MainActivity;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.TestUtils;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
@@ -79,8 +80,8 @@ public class TasksScreenTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<TasksActivity> mTasksActivityTestRule =
-            new ActivityTestRule<TasksActivity>(TasksActivity.class) {
+    public ActivityTestRule<MainActivity> mMainActivityTestRule =
+            new ActivityTestRule<MainActivity>(MainActivity.class) {
 
                 /**
                  * To avoid a long list of tasks and the need to scroll through the list to find a
@@ -408,7 +409,7 @@ public class TasksScreenTest {
         onView(withText(TITLE1)).check(matches(not(isDisplayed())));
 
         // when rotating the screen
-        TestUtils.rotateOrientation(mTasksActivityTestRule);
+        TestUtils.rotateOrientation(mMainActivityTestRule);
 
         // then nothing changes
         onView(withText(TITLE1)).check(doesNotExist());
@@ -428,7 +429,7 @@ public class TasksScreenTest {
         onView(withText(TITLE1)).check(matches(isDisplayed()));
 
         // when rotating the screen
-        TestUtils.rotateOrientation(mTasksActivityTestRule);
+        TestUtils.rotateOrientation(mMainActivityTestRule);
 
         // then nothing changes
         onView(withText(TITLE1)).check(matches(isDisplayed()));
@@ -469,11 +470,11 @@ public class TasksScreenTest {
     }
 
     private String getText(int stringId) {
-        return mTasksActivityTestRule.getActivity().getResources().getString(stringId);
+        return mMainActivityTestRule.getActivity().getResources().getString(stringId);
     }
 
     private String getToolbarNavigationContentDescription() {
         return TestUtils.getToolbarNavigationContentDescription(
-                mTasksActivityTestRule.getActivity(), R.id.toolbar);
+                mMainActivityTestRule.getActivity(), R.id.toolbar);
     }
 }

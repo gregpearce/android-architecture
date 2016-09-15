@@ -22,6 +22,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.example.android.architecture.blueprints.todoapp.MainActivity;
 import com.example.android.architecture.blueprints.todoapp.R;
 
 import org.junit.After;
@@ -56,8 +57,8 @@ public class AddEditTaskScreenTest {
      * blocks of Junit tests.
      */
     @Rule
-    public IntentsTestRule<AddEditTaskActivity> mAddTaskIntentsTestRule =
-            new IntentsTestRule<>(AddEditTaskActivity.class);
+    public IntentsTestRule<MainActivity> mAddTaskIntentsTestRule =
+            new IntentsTestRule<>(MainActivity.class);
 
     /**
      * Prepare your test fixture for this test. In this case we register an IdlingResources with

@@ -35,6 +35,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.Gravity;
 
+import com.example.android.architecture.blueprints.todoapp.MainActivity;
 import com.example.android.architecture.blueprints.todoapp.R;
 
 import org.junit.Rule;
@@ -57,8 +58,8 @@ public class AppNavigationTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<TasksActivity> mActivityTestRule =
-            new ActivityTestRule<>(TasksActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class);
 
     @Test
     public void clickOnStatisticsNavigationItem_ShowsStatisticsScreen() {

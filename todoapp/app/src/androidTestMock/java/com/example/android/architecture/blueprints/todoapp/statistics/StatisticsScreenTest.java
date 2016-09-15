@@ -27,7 +27,6 @@ import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteDataSource;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
-import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -59,7 +58,7 @@ public class StatisticsScreenTest {
             new ActivityTestRule<>(MainActivity.class, true, false);
 
     /**
-     * Setup your test fixture with a fake task id. The {@link TaskDetailActivity} is started with
+     * Setup your test fixture with a fake task id. The {@link MainActivity} is started with
      * a particular task id, which is then loaded from the service API.
      *
      * <p>

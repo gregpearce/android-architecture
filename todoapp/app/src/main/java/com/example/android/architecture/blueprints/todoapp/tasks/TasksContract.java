@@ -19,6 +19,7 @@ package com.example.android.architecture.blueprints.todoapp.tasks;
 import android.support.annotation.NonNull;
 
 import com.example.android.architecture.blueprints.todoapp.BaseView;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResult;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.BasePresenter;
 
@@ -68,7 +69,7 @@ public interface TasksContract {
 
     interface Presenter extends BasePresenter {
 
-        void result(int requestCode, int resultCode);
+        void result(ControllerResult result);
 
         void loadTasks(boolean forceUpdate);
 

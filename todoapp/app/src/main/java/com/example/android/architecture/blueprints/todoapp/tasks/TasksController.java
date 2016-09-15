@@ -48,6 +48,8 @@ import com.example.android.architecture.blueprints.todoapp.BaseController;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskController;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResult;
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResultHandler;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailController;
 
@@ -57,7 +59,8 @@ import java.util.List;
 /**
  * Display a grid of {@link Task}s. User can choose to view all, active or completed tasks.
  */
-public class TasksController extends BaseController implements TasksContract.View {
+public class TasksController extends BaseController
+        implements TasksContract.View, ControllerResultHandler {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
@@ -79,21 +82,19 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
     private TextView mFilteringLabelView;
 
+    private ControllerResult mControllerResult;
+
     public TasksController() {
     }
 
     /**
      * This constructor is used by Conductor to recreate the Controller if it has been destroyed.
-     * @param args  The {@link Bundle} object containing the previous state of the Controller.
+     *
+     * @param args The {@link Bundle} object containing the previous state of the Controller.
      */
     public TasksController(Bundle args) {
         super(args);
         mCurrentFiltering = (TasksFilterType) args.getSerializable(CURRENT_FILTERING_KEY);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPresenter.result(requestCode, resultCode);
     }
 
     @NonNull
@@ -160,12 +161,21 @@ public class TasksController extends BaseController implements TasksContract.Vie
         return root;
     }
 
+    @Override
+    public void onResult(ControllerResult result) {
+        /* Since this method will be called while this Controller is still on the back-stack and
+         not attached to the Activity view hierarchy, we should wait until the we are reattached
+         to process the result. */
+        mControllerResult = result;
+    }
+
     private void setupPresenter() {
         mPresenter = new TasksPresenter(
                 Injection.provideTasksRepository(getApplicationContext()), this);
         if (mCurrentFiltering != null) {
             mPresenter.setFiltering(mCurrentFiltering);
         }
+
     }
 
     @Override
@@ -182,6 +192,12 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
         // Start Presenter
         mPresenter.start();
+
+        // If we are returning from a previous Controller and have a result, process it.
+        if (mControllerResult != null) {
+            mPresenter.result(mControllerResult);
+            mControllerResult = null;
+        }
     }
 
     @Override
@@ -345,7 +361,9 @@ public class TasksController extends BaseController implements TasksContract.Vie
 
     @Override
     public void showAddTask() {
-        getRouter().pushController(RouterTransaction.with(new AddEditTaskController())
+        AddEditTaskController addEditTaskController = new AddEditTaskController();
+        addEditTaskController.setTargetController(this);
+        getRouter().pushController(RouterTransaction.with(addEditTaskController)
                 .pushChangeHandler(new HorizontalChangeHandler())
                 .popChangeHandler(new HorizontalChangeHandler()));
     }

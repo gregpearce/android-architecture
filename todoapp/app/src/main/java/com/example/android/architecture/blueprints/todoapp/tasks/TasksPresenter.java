@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import android.support.annotation.NonNull;
 
+import com.example.android.architecture.blueprints.todoapp.controller.ControllerResult;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
@@ -53,12 +54,11 @@ public class TasksPresenter implements TasksContract.Presenter {
     }
 
     @Override
-    public void result(int requestCode, int resultCode) {
+    public void result(ControllerResult result) {
         // If a task was successfully added, show snackbar
-        // todo: add this feature back
-//        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
-//            mTasksView.showSuccessfullySavedMessage();
-//        }
+        if (result == ControllerResult.OK) {
+            mTasksView.showSuccessfullySavedMessage();
+        }
     }
 
     @Override

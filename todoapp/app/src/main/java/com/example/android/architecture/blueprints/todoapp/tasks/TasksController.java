@@ -196,18 +196,18 @@ public class TasksController extends BaseController implements TasksContract.Vie
             case android.R.id.home:
                 // Open the navigation drawer when the home icon is selected from the toolbar.
                 getDrawerLayout().openDrawer(GravityCompat.START);
-                break;
+                return true;
             case R.id.menu_clear:
                 mPresenter.clearCompletedTasks();
-                break;
+                return true;
             case R.id.menu_filter:
                 showFilteringPopUpMenu();
-                break;
+                return true;
             case R.id.menu_refresh:
                 mPresenter.loadTasks(true);
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -45,11 +45,11 @@ public abstract class BaseController extends Controller {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Set the default behavior to be back navigation
-                getRouter().popCurrentController();
-                break;
+                // Set the default behavior to be back navigation.
+                getRouter().handleBack();
+                return true;
         }
-        return true;
+        return false;
     }
 
     @Override

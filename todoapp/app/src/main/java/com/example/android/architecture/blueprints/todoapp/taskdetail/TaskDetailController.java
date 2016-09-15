@@ -122,7 +122,7 @@ public class TaskDetailController extends BaseController implements TaskDetailCo
                 mPresenter.deleteTask();
                 return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

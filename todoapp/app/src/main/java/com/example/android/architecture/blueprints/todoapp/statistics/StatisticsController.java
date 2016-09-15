@@ -78,9 +78,9 @@ public class StatisticsController extends BaseController implements StatisticsCo
             case android.R.id.home:
                 // Open the navigation drawer when the home icon is selected from the toolbar.
                 getDrawerLayout().openDrawer(GravityCompat.START);
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

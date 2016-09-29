@@ -18,7 +18,6 @@ package com.example.android.architecture.blueprints.todoapp.tasks;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -228,7 +227,7 @@ public class TasksController extends BaseController
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.tasks_fragment_menu, menu);
+        inflater.inflate(R.menu.tasks_controller_menu, menu);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
     private ViewGroup mContainer;
     private DrawerLayout mDrawerLayout;
 
-    private Router router;
+    private Router mRouter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
             setupDrawerContent(navigationView);
         }
 
-        router = Conductor.attachRouter(this, mContainer, savedInstanceState);
-        if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(new TasksController()));
+        mRouter = Conductor.attachRouter(this, mContainer, savedInstanceState);
+        if (!mRouter.hasRootController()) {
+            mRouter.setRoot(RouterTransaction.with(new TasksController()));
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (!router.handleBack()) {
+        if (!mRouter.handleBack()) {
             super.onBackPressed();
         }
     }
@@ -84,10 +84,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
-                                router.setRoot(RouterTransaction.with(new TasksController()));
+                                mRouter.setRoot(RouterTransaction.with(new TasksController()));
                                 break;
                             case R.id.statistics_navigation_menu_item:
-                                router.setRoot(RouterTransaction.with(new StatisticsController()));
+                                mRouter.setRoot(RouterTransaction.with(new StatisticsController()));
                                 break;
                             default:
                                 break;

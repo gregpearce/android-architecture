@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Conductor;
@@ -31,6 +32,7 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsController;
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksController;
+import com.example.android.architecture.blueprints.todoapp.util.EspressoDrawerListener;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
 /**
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayoutProvi
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
+        mDrawerLayout.addDrawerListener(new EspressoDrawerListener());
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);

@@ -362,16 +362,12 @@ public class TasksController extends BaseController
     public void showAddTask() {
         AddEditTaskController addEditTaskController = new AddEditTaskController();
         addEditTaskController.setTargetController(this);
-        getRouter().pushController(RouterTransaction.with(addEditTaskController)
-                .pushChangeHandler(new HorizontalChangeHandler())
-                .popChangeHandler(new HorizontalChangeHandler()));
+        getRouter().pushController(RouterTransaction.with(addEditTaskController));
     }
 
     @Override
     public void showTaskDetailsUi(String taskId) {
-        getRouter().pushController(RouterTransaction.with(new TaskDetailController(taskId))
-                .pushChangeHandler(new HorizontalChangeHandler())
-                .popChangeHandler(new HorizontalChangeHandler()));
+        getRouter().pushController(RouterTransaction.with(new TaskDetailController(taskId)));
     }
 
     @Override

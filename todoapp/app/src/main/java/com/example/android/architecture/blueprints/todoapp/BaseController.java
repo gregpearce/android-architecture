@@ -30,8 +30,8 @@ public abstract class BaseController extends Controller {
     }
 
     protected DrawerLayout getDrawerLayout() {
-        DrawerLayoutProvider actionBarProvider = ((DrawerLayoutProvider)getActivity());
-        return actionBarProvider != null ? actionBarProvider.getDrawerLayout() : null;
+        DrawerLayoutProvider drawerLayoutProvider = ((DrawerLayoutProvider)getActivity());
+        return drawerLayoutProvider.getDrawerLayout();
     }
 
     @Override

@@ -41,10 +41,13 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.DrawerActions.open;
+import static android.support.test.espresso.contrib.DrawerActions.openDrawer;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.android.architecture.blueprints.todoapp.custom.action.NavigationViewActions.navigateTo;
 import static org.hamcrest.Matchers.containsString;
 
 /**
@@ -97,33 +100,8 @@ public class StatisticsScreenTest {
      */
     public void navigateStatisticsScreen() {
         // Open the navigation drawer
-        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
-        // Click the Statistics menu item. Note: if the test is failing here due to Espresso not
-        // waiting for the navigation drawer animation to complete, turn off animations on your
-        // test device as outlined in the Espresso setup guide:
-        // https://google.github.io/android-testing-support-library/docs/espresso/setup/index.html#setup-your-test-environment
-        onView(withText(R.string.statistics_title)).perform(click());
-    }
-
-    /**
-     * A custom Espresso action used to open the navigation drawer.
-     */
-    private static ViewAction actionOpenDrawer() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(DrawerLayout.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "open drawer";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                ((DrawerLayout) view).openDrawer(GravityCompat.START);
-            }
-        };
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(withId(R.id.nav_view))
+                .perform(navigateTo(R.id.statistics_navigation_menu_item));
     }
 }

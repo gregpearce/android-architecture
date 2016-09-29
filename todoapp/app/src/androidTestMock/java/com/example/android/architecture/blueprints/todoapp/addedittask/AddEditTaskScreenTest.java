@@ -72,6 +72,17 @@ public class AddEditTaskScreenTest {
                 mAddTaskIntentsTestRule.getActivity().getCountingIdlingResource());
     }
 
+    /**
+     * Since this is a single Activity version of the app, we cannot launch straight to the
+     * AddEditTask screen (we can't just launch an Activity).
+     * We need to manually navigate there from the first screen (the Tasks screen).
+     */
+    @Before
+    public void navigateToAddEditTaskScreen() {
+        // Click on the add task button
+        onView(withId(R.id.fab_add_task)).perform(click());
+    }
+
     @Test
     public void errorShownOnEmptyTask() {
         // Add task title and description

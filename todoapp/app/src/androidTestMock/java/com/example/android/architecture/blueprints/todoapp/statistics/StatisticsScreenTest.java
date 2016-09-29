@@ -16,11 +16,16 @@
 
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.View;
 
 import com.example.android.architecture.blueprints.todoapp.MainActivity;
 import com.example.android.architecture.blueprints.todoapp.R;
@@ -28,14 +33,17 @@ import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteD
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
 
-import org.junit.Before;
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 
@@ -47,45 +55,75 @@ import static org.hamcrest.Matchers.containsString;
 public class StatisticsScreenTest {
 
     /**
-     * {@link ActivityTestRule} is a JUnit {@link Rule @Rule} to launch your activity under test.
+     * {@link IntentsTestRule} is an {@link ActivityTestRule} which inits and releases Espresso
+     * Intents before and after each test run.
      *
      * <p>
      * Rules are interceptors which are executed for each test method and are important building
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<MainActivity> mStatisticsActivityTestRule =
-            new ActivityTestRule<>(MainActivity.class, true, false);
+    public IntentsTestRule<MainActivity> mAddTaskIntentsTestRule =
+            new IntentsTestRule<>(MainActivity.class);
+
+    @Test
+    public void Tasks_ShowsNonEmptyMessage() throws Exception {
+        stubTasks();
+        navigateStatisticsScreen();
+
+        // Check that the active and completed tasks text is displayed
+        String expectedActiveTaskText = InstrumentationRegistry.getTargetContext()
+                                                .getString(R.string.statistics_active_tasks);
+        onView(withText(containsString(expectedActiveTaskText))).check(matches(isDisplayed()));
+        String expectedCompletedTaskText = InstrumentationRegistry.getTargetContext()
+                                                   .getString(R.string.statistics_completed_tasks);
+        onView(withText(containsString(expectedCompletedTaskText))).check(matches(isDisplayed()));
+    }
 
     /**
-     * Setup your test fixture with a fake task id. The {@link MainActivity} is started with
-     * a particular task id, which is then loaded from the service API.
-     *
-     * <p>
-     * Note that this test runs hermetically and is fully isolated using a fake implementation of
-     * the service API. This is a great way to make your tests more reliable and faster at the same
-     * time, since they are isolated from any outside dependencies.
+     * Setup the test fixture with a some fake tasks.
      */
-    @Before
-    public void intentWithStubbedTaskId() {
+    public void stubTasks() {
         // Given some tasks
         TasksRepository.destroyInstance();
         FakeTasksRemoteDataSource.getInstance().addTasks(new Task("Title1", "", false));
         FakeTasksRemoteDataSource.getInstance().addTasks(new Task("Title2", "", true));
-
-        // Lazily start the Activity from the ActivityTestRule
-        Intent startIntent = new Intent();
-        mStatisticsActivityTestRule.launchActivity(startIntent);
     }
 
-    @Test
-    public void Tasks_ShowsNonEmptyMessage() throws Exception {
-        // Check that the active and completed tasks text is displayed
-        String expectedActiveTaskText = InstrumentationRegistry.getTargetContext()
-                .getString(R.string.statistics_active_tasks);
-        onView(withText(containsString(expectedActiveTaskText))).check(matches(isDisplayed()));
-        String expectedCompletedTaskText = InstrumentationRegistry.getTargetContext()
-                .getString(R.string.statistics_completed_tasks);
-        onView(withText(containsString(expectedCompletedTaskText))).check(matches(isDisplayed()));
+    /**
+     * Since this is a single Activity version of the app, we cannot launch straight to the
+     * Statistics screen (we can't just launch an Activity).
+     * We need to manually navigate there from the first screen (the Tasks screen).
+     */
+    public void navigateStatisticsScreen() {
+        // Open the navigation drawer
+        onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
+        // Click the Statistics menu item. Note: if the test is failing here due to Espresso not
+        // waiting for the navigation drawer animation to complete, turn off animations on your
+        // test device as outlined in the Espresso setup guide:
+        // https://google.github.io/android-testing-support-library/docs/espresso/setup/index.html#setup-your-test-environment
+        onView(withText(R.string.statistics_title)).perform(click());
+    }
+
+    /**
+     * A custom Espresso action used to open the navigation drawer.
+     */
+    private static ViewAction actionOpenDrawer() {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(DrawerLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "open drawer";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((DrawerLayout) view).openDrawer(GravityCompat.START);
+            }
+        };
     }
 }

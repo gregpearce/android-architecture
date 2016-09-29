@@ -282,7 +282,7 @@ public class TasksScreenTest {
 
         // Verify it was deleted
         viewAllTasks();
-        onView(withText(TITLE1)).check(matches(not(isDisplayed())));
+        onView(withText(TITLE1)).check(doesNotExist());
     }
 
     @Test

@@ -190,13 +190,13 @@ public class TaskDetailController extends BaseController
     }
 
     public void showTaskMarkedComplete() {
-        Snackbar.make(getView(), getResources().getString(R.string.task_marked_complete), Snackbar.LENGTH_LONG)
+        Snackbar.make(mDetailTitle, getResources().getString(R.string.task_marked_complete), Snackbar.LENGTH_LONG)
                 .show();
     }
 
     @Override
     public void showTaskMarkedActive() {
-        Snackbar.make(getView(), getResources().getString(R.string.task_marked_active), Snackbar.LENGTH_LONG)
+        Snackbar.make(mDetailTitle, getResources().getString(R.string.task_marked_active), Snackbar.LENGTH_LONG)
                 .show();
     }
 

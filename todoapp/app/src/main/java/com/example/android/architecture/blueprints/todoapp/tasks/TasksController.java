@@ -394,7 +394,7 @@ public class TasksController extends BaseController
     }
 
     private void showMessage(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mTasksView, message, Snackbar.LENGTH_LONG).show();
     }
 
     private static class TasksAdapter extends BaseAdapter {

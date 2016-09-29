@@ -24,7 +24,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Conductor;
@@ -38,7 +37,7 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 /**
  * The activity for the app.
  */
-public class MainActivity extends AppCompatActivity implements DrawerLayoutProvider, ActionBarProvider {
+public class MainActivity extends AppCompatActivity implements DrawerLayoutProvider, ActionBarInterface {
 
     private ViewGroup mContainer;
     private DrawerLayout mDrawerLayout;

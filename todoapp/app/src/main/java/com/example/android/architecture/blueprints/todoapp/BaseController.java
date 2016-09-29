@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,8 +20,13 @@ public abstract class BaseController extends Controller {
     }
 
     protected ActionBar getActionBar() {
-        ActionBarProvider actionBarProvider = ((ActionBarProvider)getActivity());
-        return actionBarProvider != null ? actionBarProvider.getSupportActionBar() : null;
+        ActionBarInterface actionBarInterface = ((ActionBarInterface)getActivity());
+        return actionBarInterface.getSupportActionBar();
+    }
+
+    protected void setActionBar(Toolbar toolbar) {
+        ActionBarInterface actionBarInterface = ((ActionBarInterface)getActivity());
+        actionBarInterface.setSupportActionBar(toolbar);
     }
 
     protected DrawerLayout getDrawerLayout() {
@@ -32,11 +38,6 @@ public abstract class BaseController extends Controller {
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         // Default settings to reset Activity UI state to each time a new controller is loaded.
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setHomeAsUpIndicator(0);
-
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }

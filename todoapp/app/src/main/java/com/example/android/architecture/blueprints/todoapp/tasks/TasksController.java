@@ -28,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,6 +109,13 @@ public class TasksController extends BaseController
             }
         });
 
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        setActionBar(toolbar);
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.list_title);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         // Set up floating action button
         FloatingActionButton fab =
                 (FloatingActionButton) root.findViewById(R.id.fab_add_task);
@@ -167,11 +175,6 @@ public class TasksController extends BaseController
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         // Configure Activity level UI.
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(R.string.list_title);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
 

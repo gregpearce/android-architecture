@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,13 @@ public class StatisticsController extends BaseController implements StatisticsCo
         View root = inflater.inflate(R.layout.statistics_controller, container, false);
         mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        setActionBar(toolbar);
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.statistics_title);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         setHasOptionsMenu(true);
 
         setActive(true);
@@ -59,11 +67,6 @@ public class StatisticsController extends BaseController implements StatisticsCo
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
-        // Configure Activity level UI.
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(R.string.statistics_title);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         DrawerLayout drawerLayout = getDrawerLayout();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);

@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,6 +82,13 @@ public class TaskDetailController extends BaseController
         mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);
         mDetailCompleteStatus = (CheckBox) root.findViewById(R.id.task_detail_complete);
 
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        setActionBar(toolbar);
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.app_name);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         // Set up floating action button
         FloatingActionButton fab =
                 (FloatingActionButton) root.findViewById(R.id.fab_edit_task);
@@ -105,12 +113,6 @@ public class TaskDetailController extends BaseController
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
-
-        // Configure Activity level UI.
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(R.string.app_name);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
 
         // Start Presenter
         mPresenter.start();

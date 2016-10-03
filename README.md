@@ -1,6 +1,6 @@
 # TODO-MVP-Conductor
 
-It is based on the [TODO-MVP](https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp) sample and uses the [Conductor](https://github.com/bluelinelabs/Conductor) framework to refactor to a single Activity architecture.
+Based on the [TODO-MVP](https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp) sample and uses the [Conductor](https://github.com/bluelinelabs/Conductor) framework to refactor to a single Activity architecture.
 
 The basic components of the Conductor framework architecture [are outlined here](https://github.com/bluelinelabs/Conductor#components-to-know).
 

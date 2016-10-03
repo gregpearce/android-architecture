@@ -2,6 +2,8 @@
 
 Based on the [TODO-MVP](https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp) sample and uses the [Conductor](https://github.com/bluelinelabs/Conductor) framework to refactor to a single Activity architecture.
 
+Project maintainer: [gregpearce](https://github.com/gregpearce).
+
 The basic components of the Conductor framework architecture [are outlined here](https://github.com/bluelinelabs/Conductor#components-to-know).
 
 `Activity` and `Fragment` are replaced with `Controller` classes, which have a simpler lifecycle [outlined in the Conductor documentation](https://github.com/bluelinelabs/Conductor#controller-lifecycle). All classes below the View layer stayed the same as in the original TODO-MVP app.

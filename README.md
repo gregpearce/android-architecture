@@ -8,7 +8,7 @@ The basic components of the Conductor framework architecture [are outlined here]
 
 `Activity` and `Fragment` are replaced with `Controller` classes, which have a simpler lifecycle [outlined in the Conductor documentation](https://github.com/bluelinelabs/Conductor#controller-lifecycle). All classes below the View layer stayed the same as in the original TODO-MVP app.
 
-<img src="https://raw.githubusercontent.com/wiki/gregpearce/android-architecture/images/mvp.png" alt="Diagram"/>
+<img src="https://raw.githubusercontent.com/wiki/grepx/android-architecture/images/mvp.png" alt="Diagram"/>
 
 ## Code
 
